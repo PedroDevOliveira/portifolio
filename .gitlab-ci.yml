@@ -1,0 +1,25 @@
+image: docker:stable
+
+stages:
+  - test
+  - deploy
+
+test:
+  stage: test
+  only:
+    - master
+  script:
+    - echo run tests in this section
+
+deploy-prod:
+  stage: deploy
+  only:
+    - master
+  before_script:
+    - sudo docker-compose down
+    - sleep 4
+    - sudo docker image rm html-server-image:v1
+  script:
+    - sudo docker build -t html-server-image:v1 .
+  after_script:
+    - sudo docker-compose up --build -d --force-recreate

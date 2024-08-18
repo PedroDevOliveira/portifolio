@@ -1,0 +1,24 @@
+version: "3.5"
+
+networks:
+  web:
+    external: true
+  internal:
+    external: false
+
+
+services:
+  portfolio:
+    image: html-server-image:v1
+    ports:
+      - 8000:80
+      - 445:81
+    labels:
+      - traefik.backend=portfolio
+      - traefik.frontend.rule=Host:pedrounb.com.br,www.pedrounb.com.br
+      - traefik.docker.network=web
+      - traefik.port=80
+    networks:
+      - internal
+      - web
+
